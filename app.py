@@ -1,294 +1,94 @@
 import streamlit as st
-from ai_utils import generate_content
+from styles import apply_theme, render_header
 
-# Page Config
-st.set_page_config(page_title="MagicBrief AI", page_icon="✨", layout="wide")
+# Apply Theme
+apply_theme()
+render_header()
 
-# Custom CSS for MagicBrief Theme
+# Hero Section
 st.markdown("""
-<style>
-    /* Global Background */
-    .stApp {
-        background-color: #2E0249; /* Deep Purple */
-        color: #ffffff;
-    }
-
-    /* Text Color Override */
-    h1, h2, h3, h4, h5, h6, p, label, div {
-        color: #ffffff !important;
-    }
-
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #570A57; /* Lighter Purple */
-    }
-
-    /* Buttons */
-    .stButton > button {
-        background-color: #A91079; /* Magenta/Lavender Accent */
-        color: white !important;
-        border-radius: 20px;
-        border: none;
-        padding: 10px 24px;
-        font-weight: bold;
-    }
-    .stButton > button:hover {
-        background-color: #F806CC; /* Brighter Accent */
-    }
-
-    /* Inputs */
-    .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea,
-    .stSelectbox > div > div > div {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    /* Headers */
-    header {
-        background-color: transparent !important;
-    }
-
-    /* Custom Header Container */
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 0;
-        margin-bottom: 2rem;
-    }
-
-    .magic-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        background: -webkit-linear-gradient(left, #fff, #A91079);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Custom Header
-st.markdown("""
-<div class="header-container">
-    <div class="magic-title">✨ MagicBrief AI</div>
+<div style="text-align: center; padding: 4rem 0;">
+    <h1 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">
+        Supercharge Your <span style="background: -webkit-linear-gradient(left, #fff, #A91079); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">LinkedIn Presence</span> with AI
+    </h1>
+    <p style="font-size: 1.2rem; opacity: 0.8; max-width: 700px; margin: 0 auto 2rem auto; line-height: 1.6;">
+        The all-in-one platform to automate content, optimize your profile,
+        and grow your network 10x faster using advanced AI algorithms.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar - Navigation
-st.sidebar.title("🚀 Navigation")
-category = st.sidebar.radio(
-    "Choose a Category",
-    ["Content Creation", "Profile Optimization", "Networking", "Growth & Strategy"]
-)
+# Hero CTA Buttons
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    if st.button("Start Growing Free 🚀", use_container_width=True):
+        st.switch_page("pages/1_Our_Product.py")
 
-st.markdown(f"## **{category}**")
+# Core Services Section
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; margin-bottom: 2rem;'>Core Services</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; margin-bottom: 3rem; opacity: 0.8;'>Unlock your full potential with our suite of AI-powered tools designed specifically for LinkedIn professionals.</p>", unsafe_allow_html=True)
 
-# Default Provider is Google (Handled in ai_utils with hardcoded key)
-provider = "google"
-api_key = None # Handled in ai_utils
+row1_col1, row1_col2 = st.columns(2)
 
-# Logic for Content Creation
-if category == "Content Creation":
-    tool_selection = st.selectbox(
-        "Select Tool",
-        ["Post Generator", "Hook Generator", "Carousel Writer", "Comment Generator", "Repost Insight", "Hashtag Generator"]
-    )
+with row1_col1:
+    st.markdown("""
+    <div class="feature-card">
+        <h3>📝 Content Creation</h3>
+        <p style="opacity: 0.8;">Viral Post Generator, Hook Generator, Carousel Writer, and more. Create engaging content in seconds that stops the scroll.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.subheader(f"🛠️ {tool_selection}")
+    st.markdown("""
+    <div class="feature-card">
+        <h3>🤝 Networking</h3>
+        <p style="opacity: 0.8;">Smart Connection Outreach, Cold DM Writer, and Reply Assistant. Build meaningful connections that convert.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    if tool_selection == "Post Generator":
-        topic = st.text_input("Enter Topic")
-        tone = st.selectbox("Select Tone", ["Professional", "Casual", "Inspirational", "Educational", "Controversial"])
-        post_type = st.selectbox("Post Type", ["Story", "Tips/Listicle", "Personal Branding", "Case Study"])
+with row1_col2:
+    st.markdown("""
+    <div class="feature-card">
+        <h3>👤 Profile Optimization</h3>
+        <p style="opacity: 0.8;">Headline Generator, About Section Writer, and SEO Optimizer. Stand out to recruiters and clients instantly.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-        if st.button("Generate Post"):
-            prompt = f"Write a LinkedIn post about '{topic}'. Tone: {tone}. Type: {post_type}. Make it engaging and formatted for LinkedIn."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated Post", result, height=300)
+    st.markdown("""
+    <div class="feature-card">
+        <h3>📈 Growth & Strategy</h3>
+        <p style="opacity: 0.8;">30 Post Ideas, Content Calendar, and Brand Positioning. Data-driven growth tactics to scale your brand.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    elif tool_selection == "Hook Generator":
-        topic = st.text_input("Enter Topic or Context")
-        if st.button("Generate Hooks"):
-            prompt = f"Generate 5 scroll-stopping LinkedIn hooks (first lines) for a post about: '{topic}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
+# Social Proof Section
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown("<h4 style='text-align: center; opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;'>Trusted by professionals at top companies</h4>", unsafe_allow_html=True)
 
-    elif tool_selection == "Carousel Writer":
-        topic = st.text_input("Enter Topic")
-        num_slides = st.slider("Number of Slides", 3, 10, 5)
-        if st.button("Generate Carousel Content"):
-            prompt = f"Create a slide-by-slide outline for a LinkedIn carousel about '{topic}'. It should have {num_slides} slides. Include content for each slide."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated Carousel Content", result, height=400)
+sp_cols = st.columns(5)
+companies = ["TechCorp", "GlobalNet", "StartUp.io", "LuxBrand", "FinGroup"]
+icons = ["🛡️", "🌐", "⚡", "💎", "💼"]
 
-    elif tool_selection == "Comment Generator":
-        post_content = st.text_area("Paste the LinkedIn Post content here")
-        if st.button("Generate Comments"):
-            prompt = f"Generate 3 smart, thoughtful, and engaging comments for this LinkedIn post: '{post_content}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
+for col, company, icon in zip(sp_cols, companies, icons):
+    with col:
+        st.markdown(f"<div style='text-align: center; font-weight: bold; opacity: 0.7; font-size: 1.2rem;'>{icon} {company}</div>", unsafe_allow_html=True)
 
-    elif tool_selection == "Repost Insight":
-        original_post = st.text_area("Paste the Original Post content")
-        if st.button("Generate Insight"):
-            prompt = f"I want to repost this content on LinkedIn with my own insight. Generate a thoughtful introduction/insight to add on top of this repost: '{original_post}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated Insight", result, height=200)
+# Footer CTA
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("""
+<div style="background-color: rgba(255,255,255,0.05); padding: 3rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+    <h2 style="margin-bottom: 1rem;">Ready to transform your career?</h2>
+    <p style="opacity: 0.8; margin-bottom: 2rem;">Join thousands of professionals using AI to stand out, get hired, and close deals faster than ever before.</p>
+</div>
+""", unsafe_allow_html=True)
 
-    elif tool_selection == "Hashtag Generator":
-        content = st.text_area("Paste your Post Content or Topic")
-        if st.button("Generate Hashtags"):
-            prompt = f"Generate a list of relevant, high-reach LinkedIn hashtags for this content: '{content}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-elif category == "Profile Optimization":
-    tool_selection = st.selectbox(
-        "Select Tool",
-        ["Headline Generator", "About Section Writer", "Experience Rewriter", "Skills Suggestion", "SEO Optimizer"]
-    )
-
-    st.markdown("---")
-    st.subheader(f"🛠️ {tool_selection}")
-
-    if tool_selection == "Headline Generator":
-        role = st.text_input("Role")
-        industry = st.text_input("Industry")
-        usp = st.text_input("Unique Value Proposition / Key Achievement")
-        if st.button("Generate Headlines"):
-            prompt = f"Generate 5 high-converting LinkedIn headlines for a '{role}' in '{industry}'. Key achievement/USP: '{usp}'. Use delimiters like | or emojis where appropriate."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "About Section Writer":
-        background = st.text_area("Paste your Bio / Resume Summary / Key Achievements")
-        target_audience = st.text_input("Who is your target audience?")
-        if st.button("Write About Section"):
-            prompt = f"Write a compelling 'About' section for LinkedIn based on this background: '{background}'. Target audience: '{target_audience}'. Make it storytelling-based and professional."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated About Section", result, height=400)
-
-    elif tool_selection == "Experience Rewriter":
-        experience = st.text_area("Paste your current job description/bullet points")
-        if st.button("Rewrite Experience"):
-            prompt = f"Rewrite these job experience bullet points to be achievement-focused and metric-driven (start with action verbs): '{experience}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Rewritten Experience", result, height=300)
-
-    elif tool_selection == "Skills Suggestion":
-        profile_text = st.text_area("Paste your About section or Headline")
-        if st.button("Suggest Skills"):
-            prompt = f"Based on this profile text, suggest 15 relevant hard and soft skills to add to LinkedIn: '{profile_text}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "SEO Optimizer":
-        profile_text = st.text_area("Paste your Headline and About section")
-        keywords = st.text_input("Target Keywords (comma separated)")
-        if st.button("Optimize Profile"):
-            prompt = f"Analyze this LinkedIn profile text for SEO based on these keywords: '{keywords}'. Suggest improvements and where to place keywords: '{profile_text}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-elif category == "Networking":
-    tool_selection = st.selectbox(
-        "Select Tool",
-        ["Connection Request", "Cold DM Writer", "Follow-up Generator", "Reply Assistant"]
-    )
-
-    st.markdown("---")
-    st.subheader(f"🛠️ {tool_selection}")
-
-    if tool_selection == "Connection Request":
-        recipient_role = st.text_input("Recipient's Role/Title")
-        shared_context = st.text_input("Shared Interest, Event, or Group")
-        if st.button("Generate Note"):
-            prompt = f"Write 3 personalized LinkedIn connection request notes (under 300 chars) for a '{recipient_role}'. Shared context: '{shared_context}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "Cold DM Writer":
-        goal = st.selectbox("Goal", ["Sales", "Hiring", "Collaboration", "Networking"])
-        target_profile = st.text_area("Recipient's Profile Summary / Description")
-        if st.button("Generate Cold DM"):
-            prompt = f"Write a cold DM for LinkedIn with the goal of '{goal}'. Target profile summary: '{target_profile}'. Keep it concise, personalized, and value-driven."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated DM", result, height=300)
-
-    elif tool_selection == "Follow-up Generator":
-        last_message = st.text_area("Context (What was your last message/interaction?)")
-        if st.button("Generate Follow-up"):
-            prompt = f"Write a polite and professional follow-up message for LinkedIn based on this context: '{last_message}'. Don't be pushy."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated Follow-up", result, height=200)
-
-    elif tool_selection == "Reply Assistant":
-        incoming_message = st.text_area("Paste the incoming message")
-        intent = st.text_input("How do you want to respond? (e.g., politely decline, accept meeting, ask for more info)")
-        if st.button("Generate Reply"):
-            prompt = f"Draft a professional LinkedIn reply to this message: '{incoming_message}'. Intent of reply: '{intent}'."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.text_area("Generated Reply", result, height=200)
-
-elif category == "Growth & Strategy":
-    tool_selection = st.selectbox(
-        "Select Tool",
-        ["30 Post Ideas", "Brand Positioning", "Content Calendar", "Audience Pain Points"]
-    )
-
-    st.markdown("---")
-    st.subheader(f"🛠️ {tool_selection}")
-
-    if tool_selection == "30 Post Ideas":
-        niche = st.text_input("Your Niche / Industry")
-        if st.button("Generate Ideas"):
-            prompt = f"Generate 30 engaging LinkedIn post ideas for the '{niche}' niche. Categorize them by themes."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "Brand Positioning":
-        skills = st.text_input("Top 3 Skills")
-        values = st.text_input("Core Values")
-        audience = st.text_input("Target Audience")
-        if st.button("Generate Positioning"):
-            prompt = f"Create a personal brand positioning statement for someone with skills in '{skills}', values '{values}', targeting '{audience}'. Also suggest a tagline."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "Content Calendar":
-        topics = st.text_input("Core Topics (comma separated)")
-        frequency = st.selectbox("Posting Frequency", ["Daily", "3 times a week", "Weekly"])
-        if st.button("Generate Calendar"):
-            prompt = f"Create a '{frequency}' content calendar for LinkedIn covering these topics: '{topics}'. Provide a 4-week plan."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
-
-    elif tool_selection == "Audience Pain Points":
-        audience_desc = st.text_input("Describe your Target Audience")
-        if st.button("Identify Pain Points"):
-            prompt = f"Identify 10 deep pain points and struggles of '{audience_desc}' that I can address in my LinkedIn content."
-            with st.spinner("Add magic to your creative workflow..."):
-                result = generate_content(prompt, api_key, provider)
-                st.write(result)
+# Final Footer Links
+st.markdown("<br><br>", unsafe_allow_html=True)
+f_col1, f_col2, f_col3 = st.columns(3)
+with f_col1:
+    st.markdown("**✨ Gin Ai - Linkedin**")
+with f_col2:
+    st.markdown("<div style='text-align: center; opacity: 0.5;'>© 2024 Gin Ai Platform</div>", unsafe_allow_html=True)
+with f_col3:
+    st.markdown("<div style='text-align: right; opacity: 0.8;'>Privacy Policy • Terms</div>", unsafe_allow_html=True)
