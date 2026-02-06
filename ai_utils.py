@@ -32,7 +32,8 @@ def generate_content(prompt, api_key=None, provider='google'):
     try:
         if provider == 'google':
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-pro')
+            # using gemini-2.0-flash as it is available in the list
+            model = genai.GenerativeModel('gemini-2.0-flash')
             response = model.generate_content(prompt)
             return response.text
 
