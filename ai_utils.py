@@ -29,6 +29,9 @@ def generate_content(prompt, api_key=None, provider='google'):
         if not api_key:
              return "Error: API Key not configured. Please set GOOGLE_API_KEY in .streamlit/secrets.toml or environment variables."
 
+    if api_key == "mock":
+        return f"[DEMO MODE] This is a simulated response for the prompt: '{prompt[:50]}...'\n\n(To use real AI generation, please configure your GOOGLE_API_KEY in .streamlit/secrets.toml)"
+
     try:
         if provider == 'google':
             genai.configure(api_key=api_key)

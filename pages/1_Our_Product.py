@@ -15,9 +15,17 @@ category = st.sidebar.radio(
 
 st.markdown(f"## **{category}**")
 
-# Default Provider is Google (Handled in ai_utils with hardcoded key)
+# Default Provider is Google
 provider = "google"
-api_key = None # Handled in ai_utils
+
+# Try to get API Key
+if "GOOGLE_API_KEY" in st.secrets:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+elif "GOOGLE_API_KEY" in os.environ:
+    api_key = os.environ["GOOGLE_API_KEY"]
+else:
+    api_key = "mock"
+    st.warning("⚠️ API Key not found. Running in **Demo Mode**. Generated content will be simulated.")
 
 # Logic for Content Creation
 if category == "Content Creation":
